@@ -77,7 +77,7 @@ class _optionState extends State<option> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddForeigner()));
+                          builder: (context) => AddForeigner(widget.userId)));
                     },
                     child: Card(
                       elevation: 7,
@@ -102,7 +102,7 @@ class _optionState extends State<option> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => addtenetinfo()));
+                          builder: (context) => addtenetinfo(widget.userId)));
                     },
                     child: Card(
                       elevation: 7,

@@ -10,8 +10,10 @@ router.post("/", async (req, res) => {
 			return res.status(400).send({ message: error.details[0].message });
 
 		const user = await User.findOne({ companyEmail: req.body.companyEmail });
-		if (!user)
+		if (!user) {
+			console.log("Login Error");
 			return res.status(401).send({ message: "Invalid Email or Password" });
+		}
 
 		const validPassword = await bcrypt.compare(
 			req.body.password,
@@ -22,6 +24,7 @@ router.post("/", async (req, res) => {
 
 		const token = user.generateAuthToken();
 		res.status(200).send({ data: token, message: "logged in successfully" });
+		console.log("User logged in: ", req.body.companyEmail);
 	} catch (error) {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
