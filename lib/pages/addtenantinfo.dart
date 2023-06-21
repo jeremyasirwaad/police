@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:police/const.dart';
 import 'package:police/pages/login.dart';
 
 class addtenetinfo extends StatefulWidget {
@@ -98,7 +99,7 @@ class _addtenetinfoState extends State<addtenetinfo> {
 
         // Send the POST request
         var response = await http.post(
-          Uri.parse('http://10.0.2.2:8080/manage/tenet'),
+          Uri.parse('${domain}/manage/tenet'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': widget.userId

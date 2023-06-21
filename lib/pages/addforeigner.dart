@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:police/pages/register.dart';
+import '../const.dart';
 
 class AddForeigner extends StatefulWidget {
   AddForeigner(this.userId);
@@ -74,7 +75,7 @@ class _AddForeignerState extends State<AddForeigner> {
 
         // Send the POST request
         var response = await http.post(
-          Uri.parse('http://10.0.2.2:8080/manage/foreigner'),
+          Uri.parse('${domain}/manage/foreigner'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': widget.userId

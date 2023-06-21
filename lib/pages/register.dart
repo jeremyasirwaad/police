@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:police/const.dart';
 import 'package:police/pages/login.dart';
 
 class Register extends StatefulWidget {
@@ -102,7 +103,7 @@ class _RegisterState extends State<Register> {
 
         // Send the POST request
         var response = await http.post(
-          Uri.parse('http://10.0.2.2:8080/api/users'),
+          Uri.parse('${domain}/api/users'),
           headers: {'Content-Type': 'application/json'},
           body: jsonBody,
         );
