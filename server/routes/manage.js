@@ -1,13 +1,16 @@
 const router = require("express").Router();
 const authenticateToken = require("../middleware/tokenauth");
 const { User } = require("../models/user");
+const { v4: uuidv4 } = require("uuid");
 
 // POST route to add a guest employee
 router.post("/guest", authenticateToken, async (req, res) => {
 	try {
 		const userId = req.userId;
+		const newId = uuidv4();
 		console.log(userId); // Assuming you have the user ID stored in the request object after token authentication
 		const guestEmployeeData = {
+			id: newId,
 			fullName: req.body.fullName,
 			aliasName: req.body.aliasName,
 			familyName: req.body.familyName,
@@ -56,10 +59,12 @@ router.post("/foreigner", authenticateToken, async (req, res) => {
 	try {
 		const userId = req.userId;
 		console.log(userId); // Assuming you have the user ID stored in the request object after token authentication
+		const newId = uuidv4();
 
 		var foreigner;
 
 		const foreigner1 = {
+			id: newId,
 			fullName: req.body.fullName,
 			phoneNumber: req.body.phoneNumber,
 			homeCountry: req.body.homeCountry,
@@ -72,6 +77,7 @@ router.post("/foreigner", authenticateToken, async (req, res) => {
 		};
 
 		const foreigner2 = {
+			id: newId,
 			fullName: req.body.fullName,
 			phoneNumber: req.body.phoneNumber,
 			homeCountry: req.body.homeCountry,
@@ -83,6 +89,7 @@ router.post("/foreigner", authenticateToken, async (req, res) => {
 		};
 
 		const foreigner3 = {
+			id: newId,
 			fullName: req.body.fullName,
 			phoneNumber: req.body.phoneNumber,
 			homeCountry: req.body.homeCountry,
@@ -95,6 +102,7 @@ router.post("/foreigner", authenticateToken, async (req, res) => {
 		};
 
 		const foreigner4 = {
+			id: newId,
 			fullName: req.body.fullName,
 			phoneNumber: req.body.phoneNumber,
 			homeCountry: req.body.homeCountry,
@@ -144,8 +152,10 @@ router.post("/foreigner", authenticateToken, async (req, res) => {
 router.post("/tenet", authenticateToken, async (req, res) => {
 	try {
 		const userId = req.userId;
+
 		console.log(userId); // Assuming you have the user ID stored in the request object after token authentication
 		const tenetData = {
+			id: newId,
 			fullName: req.body.fullName,
 			aliasName: req.body.aliasName,
 			dateOfBirth: req.body.dateOfBirth,
@@ -184,6 +194,79 @@ router.post("/tenet", authenticateToken, async (req, res) => {
 		);
 
 		res.status(201).json({ message: "TenetData added successfully" });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
+
+router.get("/guestlist", authenticateToken, async (req, res) => {
+	try {
+		const userId = req.userId;
+		console.log(userId);
+
+		var data; // Assuming you have the user ID stored in the request object after token authentication
+
+		User.find({ _id: userId }, "guestEmployees", (err, result) => {
+			if (err) {
+				console.error(err);
+				// Handle the error
+			} else {
+				console.log(result[0].guestEmployees);
+				res.status(200).json({ message: result[0].guestEmployees });
+			}
+		});
+
+		// console.log(data[0].guestEmployees);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
+
+router.get("/foreignerlist", authenticateToken, async (req, res) => {
+	try {
+		const userId = req.userId;
+		console.log(userId);
+
+		var data; // Assuming you have the user ID stored in the request object after token authentication
+
+		User.find({ _id: userId }, "foreigner", (err, result) => {
+			if (err) {
+				console.error(err);
+				// Handle the error
+			} else {
+				console.log(result[0].foreigner);
+				res.status(200).json({ foreigner: result[0].foreigner });
+			}
+		});
+
+		// console.log(data[0].guestEmployees);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
+
+
+router.get("/tenetlist", authenticateToken, async (req, res) => {
+	try {
+		const userId = req.userId;
+		console.log(userId);
+
+		var data; // Assuming you have the user ID stored in the request object after token authentication
+
+		User.find({ _id: userId }, "tenet", (err, result) => {
+			if (err) {
+				console.error(err);
+				// Handle the error
+			} else {
+				console.log(result[0].tenet);
+				res.status(200).json({ tenet: result[0].tenet });
+			}
+		});
+
+		// console.log(data[0].guestEmployees);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal server error" });

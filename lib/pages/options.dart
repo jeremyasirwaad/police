@@ -5,6 +5,7 @@ import 'package:police/pages/addguestemployee.dart';
 import 'package:police/pages/addtenantinfo.dart';
 import 'package:police/pages/landing.dart';
 import 'package:police/pages/profile.dart';
+import 'package:police/pages/viewdata.dart';
 
 class option extends StatefulWidget {
   option(this.userId);
@@ -124,23 +125,29 @@ class _optionState extends State<option> {
                       ),
                     ),
                   ),
-                  Card(
-                    elevation: 7,
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.view_carousel_sharp,
-                            size: 40,
-                            color: Colors.blue,
-                          ),
-                          Text("View all added Data",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 18, fontWeight: FontWeight.w500))
-                        ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => viewdata(widget.userId)));
+                    },
+                    child: Card(
+                      elevation: 7,
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(
+                              Icons.view_carousel_sharp,
+                              size: 40,
+                              color: Colors.blue,
+                            ),
+                            Text("View all added Data",
+                                style: GoogleFonts.roboto(
+                                    fontSize: 18, fontWeight: FontWeight.w500))
+                          ],
+                        ),
+                        height: 150,
                       ),
-                      height: 150,
                     ),
                   ),
                   GestureDetector(

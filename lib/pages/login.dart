@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -46,6 +47,7 @@ class _loginState extends State<login> {
 
       if (response.statusCode == 200) {
         var loginresponse1 = loginresponse.fromJson(jsonDecode(response.body));
+        print(loginresponse1.data);
 
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => option(loginresponse1.data!)));
@@ -84,7 +86,7 @@ class _loginState extends State<login> {
             child: Container(
                 width: double.infinity,
                 child: Container(
-                    height: 320,
+                    height: 360,
                     margin: EdgeInsets.only(
                         top: 10, left: 30, right: 30, bottom: 40),
                     child: Card(
