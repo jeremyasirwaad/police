@@ -1,47 +1,116 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import '../const.dart';
+import 'package:police/const.dart';
+import 'package:police/dartmodel/tenetmodel.dart';
 import 'package:police/pages/login.dart';
 
-class addguestemployee extends StatefulWidget {
-  addguestemployee(this.userId);
+class UpdateTenet extends StatefulWidget {
+  UpdateTenet(this.userId, this.tenetinfo);
 
   final String userId;
+  final Tenet tenetinfo;
 
   @override
-  State<addguestemployee> createState() => _addguestemployeeState();
+  State<UpdateTenet> createState() => _UpdateTenetState();
 }
 
-class _addguestemployeeState extends State<addguestemployee> {
+class _UpdateTenetState extends State<UpdateTenet> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController fullname = TextEditingController();
-  TextEditingController alaisname = TextEditingController();
-  TextEditingController familyname = TextEditingController();
-  TextEditingController dateofbirth = TextEditingController();
-  TextEditingController gender = TextEditingController();
-  TextEditingController nativeaddress = TextEditingController();
-  TextEditingController phonenumber = TextEditingController();
-  TextEditingController policejurisdiction = TextEditingController();
-  TextEditingController fathername = TextEditingController();
-  TextEditingController fathernobnum = TextEditingController();
-  TextEditingController mothername = TextEditingController();
-  TextEditingController mothermobnum = TextEditingController();
-  TextEditingController brothernsister = TextEditingController();
-  TextEditingController currentaddress = TextEditingController();
-  TextEditingController pincode = TextEditingController();
-  TextEditingController policejusaddress = TextEditingController();
-  TextEditingController ownerphone = TextEditingController();
-  TextEditingController aadharnumber = TextEditingController();
-  TextEditingController uploadaadharcard = TextEditingController();
-  TextEditingController alternativeidentity = TextEditingController();
-  TextEditingController jobrole = TextEditingController();
-  TextEditingController dateofjoining = TextEditingController();
-  TextEditingController employmentperiod = TextEditingController();
-  TextEditingController employmentId = TextEditingController();
-  TextEditingController uploadphoto = TextEditingController();
+  late TextEditingController fullname;
+  late TextEditingController alaisname;
+  late TextEditingController dateofbirth;
+  late TextEditingController gender;
+  late TextEditingController nativeaddress;
+  late TextEditingController phonenumber;
+  late TextEditingController hospitalname;
+
+  late TextEditingController tfullname;
+  late TextEditingController talaisname;
+  late TextEditingController tdateofbirth;
+  late TextEditingController tgender;
+  late TextEditingController tnativeaddress;
+  late TextEditingController tphonenumber;
+  late TextEditingController thospitalname;
+  late TextEditingController tcurrentaddress;
+  late TextEditingController tpurposeofstay;
+  late TextEditingController taadharnumber;
+  late TextEditingController tuploadaadharcard;
+  late TextEditingController talternativeidentity;
+
+  late TextEditingController policejurisdiction;
+  late TextEditingController fathername;
+  late TextEditingController fathernobnum;
+  late TextEditingController mothername;
+  late TextEditingController mothermobnum;
+  late TextEditingController brothernsister;
+  late TextEditingController currentaddress;
+  late TextEditingController pincode;
+  late TextEditingController policejusaddress;
+  late TextEditingController ownerphone;
+  late TextEditingController aadharnumber;
+  late TextEditingController uploadaadharcard;
+  late TextEditingController alternativeidentity;
+  late TextEditingController jobrole;
+  late TextEditingController dateofjoining;
+  late TextEditingController employmentperiod;
+  late TextEditingController employmentId;
+  late TextEditingController uploadphoto;
+
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fullname = TextEditingController(text: widget.tenetinfo.fullName);
+    alaisname = TextEditingController(text: widget.tenetinfo.aliasName);
+    dateofbirth = TextEditingController(text: widget.tenetinfo.dateOfBirth);
+    gender = TextEditingController(text: widget.tenetinfo.gender);
+    nativeaddress = TextEditingController(text: widget.tenetinfo.nativeAddress);
+    phonenumber = TextEditingController(text: widget.tenetinfo.phoneNumber);
+    hospitalname = TextEditingController();
+
+    tfullname = TextEditingController(text: widget.tenetinfo.tfullName);
+    talaisname = TextEditingController(text: widget.tenetinfo.taliasName);
+    tdateofbirth = TextEditingController(text: widget.tenetinfo.tdateOfBirth);
+    tgender = TextEditingController(text: widget.tenetinfo.tgender);
+    tnativeaddress =
+        TextEditingController(text: widget.tenetinfo.tnativeAddress);
+    tphonenumber = TextEditingController();
+    thospitalname = TextEditingController();
+    tcurrentaddress =
+        TextEditingController(text: widget.tenetinfo.tcurrentAddress);
+    tpurposeofstay =
+        TextEditingController(text: widget.tenetinfo.tpurposeofStay);
+    taadharnumber = TextEditingController(text: widget.tenetinfo.taadharNumber);
+    tuploadaadharcard =
+        TextEditingController(text: widget.tenetinfo.tuploadAadharCard);
+    talternativeidentity =
+        TextEditingController(text: widget.tenetinfo.talternativeIdentity);
+
+    // policejurisdiction = TextEditingController(text: widget.tenetinfo.);
+    // fathername = TextEditingController(text: widget.tenetinfo);
+    // fathernobnum = TextEditingController(text: widget.tenetinfo);
+    // mothername = TextEditingController(text: widget.tenetinfo);
+    // mothermobnum = TextEditingController(text: widget.tenetinfo);
+    // brothernsister = TextEditingController(text: widget.tenetinfo);
+    currentaddress =
+        TextEditingController(text: widget.tenetinfo.currentAddress);
+    pincode = TextEditingController(text: widget.tenetinfo.pincode);
+    // policejusaddress = TextEditingController(text: widget.tenetinfo);
+    // ownerphone = TextEditingController(text: widget.tenetinfo);
+    aadharnumber = TextEditingController(text: widget.tenetinfo.aadharNumber);
+    uploadaadharcard =
+        TextEditingController(text: widget.tenetinfo.uploadAadharCard);
+    alternativeidentity =
+        TextEditingController(text: widget.tenetinfo.alternativeIdentity);
+    // jobrole = TextEditingController(text: widget.tenetinfo);
+    // dateofjoining = TextEditingController(text: widget.tenetinfo);
+    // employmentperiod = TextEditingController(text: widget.tenetinfo);
+    // employmentId = TextEditingController(text: widget.tenetinfo);
+    // uploadphoto = TextEditingController(text: widget.tenetinfo.);
+  }
+
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -56,36 +125,36 @@ class _addguestemployeeState extends State<addguestemployee> {
     void registerdata() async {
       if (_formKey.currentState!.validate()) {
         Map<String, dynamic> requestBody = {
+          "id": widget.tenetinfo.id,
           "fullName": fullname.text,
           "aliasName": alaisname.text,
-          "familyName": familyname.text,
           "dateOfBirth": dateofbirth.text,
           "gender": gender.text,
           "nativeAddress": nativeaddress.text,
           "currentAddress": currentaddress.text,
           "pincode": pincode.text,
           "phoneNumber": phonenumber.text,
-          "policeJurisdiction": policejurisdiction.text,
-          "policeJurisdictionOfAddress": policejurisdiction.text,
-          "fatherName": fathername.text,
-          // "montherName": mothername.text,
-          "ownerPhone": ownerphone.text,
           "aadharNumber": aadharnumber.text,
           "uploadAadharCard": uploadaadharcard.text,
           "alternativeIdentity": alternativeidentity.text,
-          "jobRole": jobrole.text,
-          "dateOfJoining": dateofjoining.text,
-          "employmentPeriod": employmentperiod.text,
-          "employmentID": employmentId.text,
-          "photo": uploadphoto.text
+          "tfullName": tfullname.text,
+          "taliasName": talaisname.text,
+          "tdateOfBirth": tdateofbirth.text,
+          "tgender": tgender.text,
+          "tnativeAddress": tnativeaddress.text,
+          "tcurrentAddress": tcurrentaddress.text,
+          "tpurposeofStay": tpurposeofstay.text,
+          "taadharNumber": taadharnumber.text,
+          "tuploadAadharCard": tuploadaadharcard.text,
+          "talternativeIdentity": talternativeidentity.text
         };
 
         // Convert the body to JSON
         String jsonBody = json.encode(requestBody);
 
         // Send the POST request
-        var response = await http.post(
-          Uri.parse('${domain}/manage/guest'),
+        var response = await http.put(
+          Uri.parse('${domain}/manage/tenet'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': widget.userId
@@ -93,35 +162,9 @@ class _addguestemployeeState extends State<addguestemployee> {
           body: jsonBody,
         );
 
-        if (response.statusCode == 201) {
+        if (response.statusCode == 200) {
           showAlertDialog(context, "Successfully",
-              "Guest has been added successfully", "close");
-
-          fullname.clear();
-          alaisname.clear();
-          familyname.clear();
-          dateofbirth.clear();
-          gender.clear();
-          nativeaddress.clear();
-          phonenumber.clear();
-          policejurisdiction.clear();
-          fathername.clear();
-          fathernobnum.clear();
-          mothername.clear();
-          mothermobnum.clear();
-          brothernsister.clear();
-          currentaddress.clear();
-          pincode.clear();
-          policejusaddress.clear();
-          ownerphone.clear();
-          aadharnumber.clear();
-          uploadaadharcard.clear();
-          alternativeidentity.clear();
-          jobrole.clear();
-          dateofjoining.clear();
-          employmentperiod.clear();
-          employmentId.clear();
-          uploadphoto.clear();
+              "Tenet details has been updated successfully", "close");
         } else {
           print(response.body);
           showAlertDialog(
@@ -134,7 +177,7 @@ class _addguestemployeeState extends State<addguestemployee> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Guest Employee"),
+        title: Text("Update Tenet Information "),
         backgroundColor: Colors.blue.shade900,
         elevation: 0,
       ),
@@ -165,18 +208,18 @@ class _addguestemployeeState extends State<addguestemployee> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40.0),
                       ),
-                      child: Container(
-                          padding: EdgeInsets.all(20),
-                          child: Form(
-                            key: _formKey,
-                            autovalidateMode: AutovalidateMode.disabled,
+                      child: Form(
+                        key: _formKey,
+                        autovalidateMode: AutovalidateMode.disabled,
+                        child: Container(
+                            padding: EdgeInsets.all(20),
                             child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   SizedBox(height: 20),
                                   Text(
-                                    "Personal Information",
+                                    "Property Owner Information",
                                     style: GoogleFonts.roboto(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600),
@@ -199,23 +242,10 @@ class _addguestemployeeState extends State<addguestemployee> {
                                     controller: alaisname,
                                     validator: (value) {
                                       return validateNotEmpty(
-                                          value, "Alais Name");
+                                          value, "Atlas Name");
                                     },
                                     decoration: InputDecoration(
-                                        hintText: "Alais Name",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: familyname,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Family Name");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Family Name",
+                                        hintText: "Atlas Name",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
@@ -225,10 +255,10 @@ class _addguestemployeeState extends State<addguestemployee> {
                                     controller: dateofbirth,
                                     validator: (value) {
                                       return validateNotEmpty(
-                                          value, "Date of Birth");
+                                          value, "Date of birth");
                                     },
                                     decoration: InputDecoration(
-                                        hintText: "Date of Birth",
+                                        hintText: "Date of birth",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
@@ -260,97 +290,6 @@ class _addguestemployeeState extends State<addguestemployee> {
                                     height: 15,
                                   ),
                                   TextFormField(
-                                    controller: phonenumber,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Phone Number");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Phone Number",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: policejurisdiction,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Police Jurisdiction");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Police Jurisdiction",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: fathername,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Father's Name");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Father's Name",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: fathernobnum,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Father's Phone");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Father's Phone number",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: mothername,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Mother's Name");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Mother's Name",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: mothermobnum,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Mother's Phone");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Mother's Phone Number",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: brothernsister,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Brother/Sister Name");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Brother/Sister Name",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
                                     controller: currentaddress,
                                     validator: (value) {
                                       return validateNotEmpty(
@@ -358,45 +297,6 @@ class _addguestemployeeState extends State<addguestemployee> {
                                     },
                                     decoration: InputDecoration(
                                         hintText: "Current Address",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: pincode,
-                                    validator: (value) {
-                                      return validateNotEmpty(value, "Pincode");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Pin Code",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: policejusaddress,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Police Jurisdiction");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText:
-                                            "Police Jurisdiction of Address",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: ownerphone,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Owner Phone Number");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Owner Phone Num",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
@@ -419,10 +319,10 @@ class _addguestemployeeState extends State<addguestemployee> {
                                     controller: uploadaadharcard,
                                     validator: (value) {
                                       return validateNotEmpty(
-                                          value, "Upload Aadhar Card");
+                                          value, "Upload Aadhaar Card");
                                     },
                                     decoration: InputDecoration(
-                                        hintText: "Upload Aadhar Card",
+                                        hintText: "Upload Aadhaar Card",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
@@ -438,74 +338,142 @@ class _addguestemployeeState extends State<addguestemployee> {
                                         hintText: "Alternative Identity",
                                         border: OutlineInputBorder()),
                                   ),
-                                  SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Text(
-                                    "Job Details",
+                                    "Add Tenet Info",
                                     style: GoogleFonts.roboto(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   TextFormField(
-                                    controller: jobrole,
+                                    controller: tfullname,
                                     validator: (value) {
                                       return validateNotEmpty(
-                                          value, "Job Role");
+                                          value, "Full Name");
                                     },
                                     decoration: InputDecoration(
-                                        hintText: "Job Role",
+                                        hintText: "Full Name",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
                                     height: 15,
                                   ),
                                   TextFormField(
-                                    controller: dateofjoining,
+                                    controller: talaisname,
                                     validator: (value) {
                                       return validateNotEmpty(
-                                          value, "Date of Joining");
+                                          value, "Atlas Name");
                                     },
                                     decoration: InputDecoration(
-                                        hintText: "Date of Joining",
+                                        hintText: "Atlas Name",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
                                     height: 15,
                                   ),
                                   TextFormField(
-                                    controller: employmentperiod,
+                                    controller: tdateofbirth,
                                     validator: (value) {
                                       return validateNotEmpty(
-                                          value, "Employment period");
+                                          value, "Date of birth");
                                     },
                                     decoration: InputDecoration(
-                                        hintText: "Employment period",
+                                        hintText: "Date of birth",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
                                     height: 15,
                                   ),
                                   TextFormField(
-                                    controller: employmentId,
+                                    controller: tgender,
                                     validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Upload Employment ID");
+                                      return validateNotEmpty(value, "Gender");
                                     },
                                     decoration: InputDecoration(
-                                        hintText: "Upload Employment ID",
+                                        hintText: "Gender",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
                                     height: 15,
                                   ),
                                   TextFormField(
-                                    controller: uploadphoto,
+                                    controller: tnativeaddress,
                                     validator: (value) {
                                       return validateNotEmpty(
-                                          value, "Upload Photo");
+                                          value, "Native Address");
                                     },
                                     decoration: InputDecoration(
-                                        hintText: "Upload Photo",
+                                        hintText: "Native Address",
+                                        border: OutlineInputBorder()),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextFormField(
+                                    controller: tcurrentaddress,
+                                    validator: (value) {
+                                      return validateNotEmpty(
+                                          value, "Current Address");
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: "Current Address",
+                                        border: OutlineInputBorder()),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextFormField(
+                                    controller: tpurposeofstay,
+                                    validator: (value) {
+                                      return validateNotEmpty(
+                                          value, "Purpose of Stay");
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: "Purpose of Stay",
+                                        border: OutlineInputBorder()),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextFormField(
+                                    controller: taadharnumber,
+                                    validator: (value) {
+                                      return validateNotEmpty(
+                                          value, "Aadhar Number");
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: "Aadhar Number",
+                                        border: OutlineInputBorder()),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextFormField(
+                                    controller: tuploadaadharcard,
+                                    validator: (value) {
+                                      return validateNotEmpty(
+                                          value, "Upload Aadhar Card");
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: "Upload Aadhar Card",
+                                        border: OutlineInputBorder()),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextFormField(
+                                    controller: talternativeidentity,
+                                    validator: (value) {
+                                      return validateNotEmpty(
+                                          value, "Alternative Identity");
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: "Alternative Identity",
                                         border: OutlineInputBorder()),
                                   ),
                                   SizedBox(
@@ -525,13 +493,13 @@ class _addguestemployeeState extends State<addguestemployee> {
                                         color: Colors.blue.shade900,
                                       ),
                                       child: Center(
-                                          child: Text("Register Details",
+                                          child: Text("Update Details",
                                               style: TextStyle(
                                                   color: Colors.white))),
                                     ),
                                   )
-                                ]),
-                          )),
+                                ])),
+                      ),
                       elevation: 10,
                     ))),
           ],
@@ -540,36 +508,3 @@ class _addguestemployeeState extends State<addguestemployee> {
     );
   }
 }
-
-// showAlertDialog(
-//     BuildContext context, String Title, String Body, String button) {
-//   // set up the button
-//   Widget okButton = TextButton(
-//     child: Text(button),
-//     onPressed: () {
-//       if (button != "close") {
-//         Navigator.of(context)
-//             .push(MaterialPageRoute(builder: (context) => login()));
-//       } else {
-//         Navigator.of(context).pop();
-//       }
-//     },
-//   );
-
-//   // set up the AlertDialog
-//   AlertDialog alert = AlertDialog(
-//     title: Text(Title),
-//     content: Text(Body),
-//     actions: [
-//       okButton,
-//     ],
-//   );
-
-//   // show the dialog
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return alert;
-//     },
-//   );
-// }

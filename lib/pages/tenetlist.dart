@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +10,9 @@ import 'package:police/pages/addforeigner.dart';
 import 'package:police/pages/addguestemployee.dart';
 import 'package:police/pages/addtenantinfo.dart';
 import 'package:police/pages/landing.dart';
+import 'package:police/pages/login.dart';
 import 'package:police/pages/profile.dart';
+import 'package:police/pages/updates/updatetenet.dart';
 import 'package:police/pages/viewdata.dart';
 
 class tenetList extends StatefulWidget {
@@ -42,6 +45,31 @@ class _tenetListState extends State<tenetList> {
       });
     } else {
       print("Error in fetching");
+    }
+  }
+
+  void deldata(dataid) async {
+    print(dataid);
+    var response = await http.delete(
+      Uri.parse('${domain}/manage/tenet/${dataid}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': widget.userId
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = tenetmodel.fromJson(jsonDecode(response.body));
+      setState(() {
+        gustdata = gustdata.where((element) => element.id != dataid).toList();
+      });
+      showAlertDialog(context, "Foreigner Deleted",
+          "Foreigner Data has been successfully deleted", "close");
+    } else {
+      // print(response.statusCode);
+      print("Error in Deleting");
+      showAlertDialog(
+          context, "Error", "Error Encountered in deleting Foreigner", "close");
     }
   }
 
@@ -80,9 +108,18 @@ class _tenetListState extends State<tenetList> {
         body: Container(
           padding: EdgeInsets.only(left: 8, right: 8, top: 20),
           child: loading
-              ? Center(child: Text("Loading"))
+              ? Center(
+                  child: SpinKitCircle(
+                  size: 50,
+                  color: Colors.blue.shade900,
+                ))
               : gustdata.isEmpty
-                  ? Text("No Tenets Added")
+                  ? Center(
+                      child: Text(
+                      "No Tenet Emplyees Added",
+                      style: GoogleFonts.roboto(
+                          fontSize: 18, fontWeight: FontWeight.w500),
+                    ))
                   : ListView(
                       children: [
                         ...List.generate(
@@ -131,7 +168,10 @@ class _tenetListState extends State<tenetList> {
                                                                 85,
                                                                 1), // Background Color
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        deldata(
+                                                            gustdata[index].id);
+                                                      },
                                                       child: Text(
                                                         "Delete",
                                                       )),
@@ -146,7 +186,16 @@ class _tenetListState extends State<tenetList> {
                                                             .blue
                                                             .shade900, // Background Color
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    UpdateTenet(
+                                                                        widget
+                                                                            .userId,
+                                                                        gustdata[
+                                                                            index])));
+                                                      },
                                                       child: Text("Update"))
                                                 ],
                                               ),

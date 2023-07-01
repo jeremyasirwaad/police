@@ -43,6 +43,7 @@ class Tenet {
   String? taadharNumber;
   String? tuploadAadharCard;
   String? talternativeIdentity;
+  String? id;
 
   Tenet(
       {this.fullName,
@@ -65,7 +66,8 @@ class Tenet {
       this.tpurposeofStay,
       this.taadharNumber,
       this.tuploadAadharCard,
-      this.talternativeIdentity});
+      this.talternativeIdentity,
+      this.id});
 
   Tenet.fromJson(Map<String, dynamic> json) {
     fullName = json['fullName'];
@@ -89,6 +91,7 @@ class Tenet {
     taadharNumber = json['taadharNumber'];
     tuploadAadharCard = json['tuploadAadharCard'];
     talternativeIdentity = json['talternativeIdentity'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -114,6 +117,7 @@ class Tenet {
     data['taadharNumber'] = this.taadharNumber;
     data['tuploadAadharCard'] = this.tuploadAadharCard;
     data['talternativeIdentity'] = this.talternativeIdentity;
+    data['id'] = this.id;
     return data;
   }
 }

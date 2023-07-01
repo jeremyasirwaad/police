@@ -9,8 +9,11 @@ import 'package:police/pages/addforeigner.dart';
 import 'package:police/pages/addguestemployee.dart';
 import 'package:police/pages/addtenantinfo.dart';
 import 'package:police/pages/landing.dart';
+import 'package:police/pages/login.dart';
 import 'package:police/pages/profile.dart';
+import 'package:police/pages/updates/updateguest.dart';
 import 'package:police/pages/viewdata.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class guestlist extends StatefulWidget {
   guestlist(this.userId);
@@ -42,6 +45,30 @@ class _guestlistState extends State<guestlist> {
       });
     } else {
       print("Error in fetching");
+    }
+  }
+
+  void deldata(dataid) async {
+    print(dataid);
+    var response = await http.delete(
+      Uri.parse('${domain}/manage/guest/${dataid}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': widget.userId
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        gustdata = gustdata.where((element) => element.id != dataid).toList();
+      });
+      showAlertDialog(context, "Guest Deleted",
+          "Guest Data has been successfully deleted", "close");
+    } else {
+      // print(response.statusCode);
+      print("Error in Deleting");
+      showAlertDialog(
+          context, "Error", "Error Encountered in deleting Guest", "close");
     }
   }
 
@@ -80,9 +107,18 @@ class _guestlistState extends State<guestlist> {
         body: Container(
           padding: EdgeInsets.only(left: 8, right: 8, top: 20),
           child: loading
-              ? Center(child: Text("Loading"))
+              ? Center(
+                  child: SpinKitCircle(
+                  size: 50,
+                  color: Colors.blue.shade900,
+                ))
               : gustdata.isEmpty
-                  ? Text("No Guest Employees Added")
+                  ? Center(
+                      child: Text(
+                      "No Guest Employees Added",
+                      style: GoogleFonts.roboto(
+                          fontSize: 18, fontWeight: FontWeight.w500),
+                    ))
                   : ListView(
                       children: [
                         ...List.generate(
@@ -130,7 +166,10 @@ class _guestlistState extends State<guestlist> {
                                                                 85,
                                                                 1), // Background Color
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        deldata(
+                                                            gustdata[index].id);
+                                                      },
                                                       child: Text(
                                                         "Delete",
                                                       )),
@@ -145,7 +184,16 @@ class _guestlistState extends State<guestlist> {
                                                             .blue
                                                             .shade900, // Background Color
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    UpdateGuest(
+                                                                        widget
+                                                                            .userId,
+                                                                        gustdata[
+                                                                            index])));
+                                                      },
                                                       child: Text("Update"))
                                                 ],
                                               ),

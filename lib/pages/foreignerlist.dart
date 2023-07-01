@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -10,7 +11,9 @@ import 'package:police/pages/addforeigner.dart';
 import 'package:police/pages/addguestemployee.dart';
 import 'package:police/pages/addtenantinfo.dart';
 import 'package:police/pages/landing.dart';
+import 'package:police/pages/login.dart';
 import 'package:police/pages/profile.dart';
+import 'package:police/pages/updates/updateforeigner.dart';
 import 'package:police/pages/viewdata.dart';
 
 class foreignerList extends StatefulWidget {
@@ -43,6 +46,31 @@ class _foreignerListState extends State<foreignerList> {
       });
     } else {
       print("Error in fetching");
+    }
+  }
+
+  void deldata(dataid) async {
+    print(dataid);
+    var response = await http.delete(
+      Uri.parse('${domain}/manage/foreigner/${dataid}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': widget.userId
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = ForeignerList.fromJson(jsonDecode(response.body));
+      setState(() {
+        gustdata = gustdata.where((element) => element.id != dataid).toList();
+      });
+      showAlertDialog(context, "Foreigner Deleted",
+          "Foreigner Data has been successfully deleted", "close");
+    } else {
+      // print(response.statusCode);
+      print("Error in Deleting");
+      showAlertDialog(
+          context, "Error", "Error Encountered in deleting Foreigner", "close");
     }
   }
 
@@ -85,9 +113,18 @@ class _foreignerListState extends State<foreignerList> {
             top: 20,
           ),
           child: loading
-              ? Center(child: Text("Loading"))
+              ? Center(
+                  child: SpinKitCircle(
+                  size: 50,
+                  color: Colors.blue.shade900,
+                ))
               : gustdata.isEmpty
-                  ? Text("No Guest Employees Added")
+                  ? Center(
+                      child: Text(
+                      "No Foreigner  Added",
+                      style: GoogleFonts.roboto(
+                          fontSize: 18, fontWeight: FontWeight.w500),
+                    ))
                   : ListView(
                       children: [
                         ...List.generate(
@@ -135,7 +172,10 @@ class _foreignerListState extends State<foreignerList> {
                                                                 85,
                                                                 1), // Background Color
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        deldata(
+                                                            gustdata[index].id);
+                                                      },
                                                       child: Text(
                                                         "Delete",
                                                       )),
@@ -150,7 +190,16 @@ class _foreignerListState extends State<foreignerList> {
                                                             .blue
                                                             .shade900, // Background Color
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    Updateforeigner(
+                                                                        widget
+                                                                            .userId,
+                                                                        gustdata[
+                                                                            index])));
+                                                      },
                                                       child: Text("Update"))
                                                 ],
                                               ),

@@ -2,46 +2,99 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../const.dart';
+import 'package:police/dartmodel/guestlistmodel.dart';
+import 'package:police/pages/listguests.dart';
+import '../../const.dart';
 import 'package:police/pages/login.dart';
 
-class addguestemployee extends StatefulWidget {
-  addguestemployee(this.userId);
+class UpdateGuest extends StatefulWidget {
+  UpdateGuest(this.userId, this.guestinfo);
 
   final String userId;
+  final Message guestinfo;
 
   @override
-  State<addguestemployee> createState() => _addguestemployeeState();
+  State<UpdateGuest> createState() => _UpdateGuestState();
 }
 
-class _addguestemployeeState extends State<addguestemployee> {
+class _UpdateGuestState extends State<UpdateGuest> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController fullname = TextEditingController();
-  TextEditingController alaisname = TextEditingController();
-  TextEditingController familyname = TextEditingController();
-  TextEditingController dateofbirth = TextEditingController();
-  TextEditingController gender = TextEditingController();
-  TextEditingController nativeaddress = TextEditingController();
-  TextEditingController phonenumber = TextEditingController();
-  TextEditingController policejurisdiction = TextEditingController();
-  TextEditingController fathername = TextEditingController();
-  TextEditingController fathernobnum = TextEditingController();
-  TextEditingController mothername = TextEditingController();
-  TextEditingController mothermobnum = TextEditingController();
-  TextEditingController brothernsister = TextEditingController();
-  TextEditingController currentaddress = TextEditingController();
-  TextEditingController pincode = TextEditingController();
-  TextEditingController policejusaddress = TextEditingController();
-  TextEditingController ownerphone = TextEditingController();
-  TextEditingController aadharnumber = TextEditingController();
-  TextEditingController uploadaadharcard = TextEditingController();
-  TextEditingController alternativeidentity = TextEditingController();
-  TextEditingController jobrole = TextEditingController();
-  TextEditingController dateofjoining = TextEditingController();
-  TextEditingController employmentperiod = TextEditingController();
-  TextEditingController employmentId = TextEditingController();
-  TextEditingController uploadphoto = TextEditingController();
+  late TextEditingController fullname =
+      TextEditingController(text: widget.guestinfo.fullName);
+  late TextEditingController alaisname =
+      TextEditingController(text: widget.guestinfo.aliasName);
+  late TextEditingController familyname =
+      TextEditingController(text: widget.guestinfo.familyName);
+  late TextEditingController dateofbirth =
+      TextEditingController(text: widget.guestinfo.dateOfBirth);
+  late TextEditingController gender =
+      TextEditingController(text: widget.guestinfo.gender);
+  late TextEditingController nativeaddress =
+      TextEditingController(text: widget.guestinfo.nativeAddress);
+  late TextEditingController phonenumber =
+      TextEditingController(text: widget.guestinfo.phoneNumber);
+  late TextEditingController policejurisdiction =
+      TextEditingController(text: widget.guestinfo.policeJurisdiction);
+  late TextEditingController fathername =
+      TextEditingController(text: widget.guestinfo.fatherName);
+  // late TextEditingController fathernobnum= TextEditingController(text: widget.guestinfo.);
+  // late TextEditingController mothername= TextEditingController(text:widget.guestinfo. );
+  // late TextEditingController mothermobnum= TextEditingController(text: );
+  // late TextEditingController brothernsister= TextEditingController(text:widget.guestinfo. );
+  late TextEditingController currentaddress =
+      TextEditingController(text: widget.guestinfo.currentAddress);
+  late TextEditingController pincode =
+      TextEditingController(text: widget.guestinfo.pincode);
+  late TextEditingController policejusaddress =
+      TextEditingController(text: widget.guestinfo.policeJurisdiction);
+  late TextEditingController ownerphone =
+      TextEditingController(text: widget.guestinfo.ownerPhone);
+  late TextEditingController aadharnumber =
+      TextEditingController(text: widget.guestinfo.aadharNumber);
+  late TextEditingController uploadaadharcard =
+      TextEditingController(text: widget.guestinfo.uploadAadharCard);
+  late TextEditingController alternativeidentity =
+      TextEditingController(text: widget.guestinfo.alternativeIdentity);
+  late TextEditingController jobrole =
+      TextEditingController(text: widget.guestinfo.jobRole);
+  late TextEditingController dateofjoining =
+      TextEditingController(text: widget.guestinfo.dateOfJoining);
+  late TextEditingController employmentperiod =
+      TextEditingController(text: widget.guestinfo.employmentPeriod);
+  late TextEditingController employmentId =
+      TextEditingController(text: widget.guestinfo.employmentID);
+  late TextEditingController uploadphoto =
+      TextEditingController(text: widget.guestinfo.photo);
   @override
+  void initState() {
+    super.initState();
+    late TextEditingController fullname;
+    late TextEditingController alaisname;
+    late TextEditingController familyname;
+    late TextEditingController dateofbirth;
+    late TextEditingController gender;
+    late TextEditingController nativeaddress;
+    late TextEditingController phonenumber;
+    late TextEditingController policejurisdiction;
+    late TextEditingController fathername;
+    late TextEditingController fathernobnum;
+    late TextEditingController mothername;
+    late TextEditingController mothermobnum;
+    late TextEditingController brothernsister;
+    late TextEditingController currentaddress;
+    late TextEditingController pincode;
+    late TextEditingController policejusaddress;
+    late TextEditingController ownerphone;
+    late TextEditingController aadharnumber;
+    late TextEditingController uploadaadharcard;
+    late TextEditingController alternativeidentity;
+    late TextEditingController jobrole;
+    late TextEditingController dateofjoining;
+    late TextEditingController employmentperiod;
+    late TextEditingController employmentId;
+    late TextEditingController uploadphoto;
+  }
+
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -54,8 +107,10 @@ class _addguestemployeeState extends State<addguestemployee> {
     }
 
     void registerdata() async {
+      print(widget.guestinfo.id);
       if (_formKey.currentState!.validate()) {
         Map<String, dynamic> requestBody = {
+          "id": widget.guestinfo.id,
           "fullName": fullname.text,
           "aliasName": alaisname.text,
           "familyName": familyname.text,
@@ -68,7 +123,6 @@ class _addguestemployeeState extends State<addguestemployee> {
           "policeJurisdiction": policejurisdiction.text,
           "policeJurisdictionOfAddress": policejurisdiction.text,
           "fatherName": fathername.text,
-          // "montherName": mothername.text,
           "ownerPhone": ownerphone.text,
           "aadharNumber": aadharnumber.text,
           "uploadAadharCard": uploadaadharcard.text,
@@ -84,7 +138,7 @@ class _addguestemployeeState extends State<addguestemployee> {
         String jsonBody = json.encode(requestBody);
 
         // Send the POST request
-        var response = await http.post(
+        var response = await http.put(
           Uri.parse('${domain}/manage/guest'),
           headers: {
             'Content-Type': 'application/json',
@@ -93,35 +147,9 @@ class _addguestemployeeState extends State<addguestemployee> {
           body: jsonBody,
         );
 
-        if (response.statusCode == 201) {
+        if (response.statusCode == 200) {
           showAlertDialog(context, "Successfully",
-              "Guest has been added successfully", "close");
-
-          fullname.clear();
-          alaisname.clear();
-          familyname.clear();
-          dateofbirth.clear();
-          gender.clear();
-          nativeaddress.clear();
-          phonenumber.clear();
-          policejurisdiction.clear();
-          fathername.clear();
-          fathernobnum.clear();
-          mothername.clear();
-          mothermobnum.clear();
-          brothernsister.clear();
-          currentaddress.clear();
-          pincode.clear();
-          policejusaddress.clear();
-          ownerphone.clear();
-          aadharnumber.clear();
-          uploadaadharcard.clear();
-          alternativeidentity.clear();
-          jobrole.clear();
-          dateofjoining.clear();
-          employmentperiod.clear();
-          employmentId.clear();
-          uploadphoto.clear();
+              "Foreigner details has been updated successfully", "close");
         } else {
           print(response.body);
           showAlertDialog(
@@ -134,7 +162,7 @@ class _addguestemployeeState extends State<addguestemployee> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Guest Employee"),
+        title: Text("Update Guest Employee"),
         backgroundColor: Colors.blue.shade900,
         elevation: 0,
       ),
@@ -295,58 +323,58 @@ class _addguestemployeeState extends State<addguestemployee> {
                                         hintText: "Father's Name",
                                         border: OutlineInputBorder()),
                                   ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: fathernobnum,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Father's Phone");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Father's Phone number",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: mothername,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Mother's Name");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Mother's Name",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: mothermobnum,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Mother's Phone");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Mother's Phone Number",
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: brothernsister,
-                                    validator: (value) {
-                                      return validateNotEmpty(
-                                          value, "Brother/Sister Name");
-                                    },
-                                    decoration: InputDecoration(
-                                        hintText: "Brother/Sister Name",
-                                        border: OutlineInputBorder()),
-                                  ),
+                                  // SizedBox(
+                                  //   height: 15,
+                                  // ),
+                                  // TextFormField(
+                                  //   controller: fathernobnum,
+                                  //   validator: (value) {
+                                  //     return validateNotEmpty(
+                                  //         value, "Father's Phone");
+                                  //   },
+                                  //   decoration: InputDecoration(
+                                  //       hintText: "Father's Phone number",
+                                  //       border: OutlineInputBorder()),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 15,
+                                  // ),
+                                  // TextFormField(
+                                  //   controller: mothername,
+                                  //   validator: (value) {
+                                  //     return validateNotEmpty(
+                                  //         value, "Mother's Name");
+                                  //   },
+                                  //   decoration: InputDecoration(
+                                  //       hintText: "Mother's Name",
+                                  //       border: OutlineInputBorder()),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 15,
+                                  // ),
+                                  // TextFormField(
+                                  //   controller: mothermobnum,
+                                  //   validator: (value) {
+                                  //     return validateNotEmpty(
+                                  //         value, "Mother's Phone");
+                                  //   },
+                                  //   decoration: InputDecoration(
+                                  //       hintText: "Mother's Phone Number",
+                                  //       border: OutlineInputBorder()),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 15,
+                                  // ),
+                                  // TextFormField(
+                                  //   controller: brothernsister,
+                                  //   validator: (value) {
+                                  //     return validateNotEmpty(
+                                  //         value, "Brother/Sister Name");
+                                  //   },
+                                  //   decoration: InputDecoration(
+                                  //       hintText: "Brother/Sister Name",
+                                  //       border: OutlineInputBorder()),
+                                  // ),
                                   SizedBox(
                                     height: 15,
                                   ),
@@ -525,7 +553,7 @@ class _addguestemployeeState extends State<addguestemployee> {
                                         color: Colors.blue.shade900,
                                       ),
                                       child: Center(
-                                          child: Text("Register Details",
+                                          child: Text("Update Details",
                                               style: TextStyle(
                                                   color: Colors.white))),
                                     ),
